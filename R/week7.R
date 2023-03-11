@@ -2,7 +2,6 @@
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(tidyverse)
 library(lubridate)
-library(GGally)
 
 
 
@@ -13,14 +12,15 @@ week7_tbl <- read_csv(file ="../data/week3.csv") %>%
   filter(q6 == 1) %>%
   select(!q6) %>%
   mutate(timeStart = ymd_hms(timeStart)) %>%
-  mutate(timeSpent = as.numeric(difftime(timeEnd, timeStart, units = c("mins"))))
+  mutate(timeSpent = as.numeric(difftime(timeEnd, timeStart, units = c("mins")))) 
+
 
 
 
 
 # Visualization
-ggpairs(week7_tbl[5:13]) #Scatterplots lower left, cor top right, density along diag = default
-
+GGally::ggpairs(week7_tbl[5:13]) 
+#Scatterplots lower left, cor top right, density along diag = default
 
 (ggplot(week7_tbl, aes(x = timeStart, y = q1)) +
   geom_point() +
@@ -40,6 +40,21 @@ ggpairs(week7_tbl[5:13]) #Scatterplots lower left, cor top right, density along 
   ggsave(filename = "../figs/fig3.png", dpi = 600, width = 7, height = 5, units = "in")
 
 
-ggplot(week7_tbl, aes(x = gender, y = timeSpent)) +
+(ggplot(week7_tbl, aes(x = gender, y = timeSpent)) +
   geom_boxplot() + 
-  labs(x = "Gender", y = "Time Elapsed (mins)")
+  labs(x = "Gender", y = "Time Elapsed (mins)")) %>%
+  ggsave(filename = "../figs/fig4.png", dpi = 600, width = 7, height = 5, units = "in")
+
+
+(ggplot(week7_tbl, aes(x = q5, y = q7, color = condition)) + 
+  geom_point(position = "jitter") +
+  geom_smooth(method = lm, se = FALSE) +
+  labs(x = "Score on Q5", y = "Score on Q7", color = "Experimental Condition") +
+  theme(legend.background = element_rect(fill = "#E0E0E0"), legend.position = "bottom")) %>% 
+  ggsave(filename = "../figs/fig5.png", dpi = 600, width = 7, height = 5, units = "in")
+
+
+#Waiting for Richard's Responses: Image Size, an difftime object
+# Image size -> all figs with width and height would need to change.
+# Line 15 -> mutate(timeSpent = difftime(timeEnd, timeStart, units = c("mins"))) 
+# Line 43 -> y = as.numeric(timeSpent)
