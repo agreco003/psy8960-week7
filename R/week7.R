@@ -58,5 +58,6 @@ GGally::ggpairs(week7_tbl[5:13])
 
 #Waiting for Richard's Responses: Image Size, an difftime object
 # Image size -> all figs with width and height would need to change.
+# Cartesian coordinates not needed for the images here, but included for practice
 # Line 15 -> mutate(timeSpent = difftime(timeEnd, timeStart, units = c("mins"))) 
 # Line 43 -> y = as.numeric(timeSpent)
